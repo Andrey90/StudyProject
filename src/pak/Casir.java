@@ -2,9 +2,6 @@ package pak;
 
 import java.util.Random;
 
-/**
- * Created by SuperStar on 06.11.2014.
- */
 public class Casir {
     private int timeToFree = 0;
     Random generatorMinut = new Random();
@@ -13,10 +10,16 @@ public class Casir {
         return generatorMinut.nextInt(from) + to;
     }
 
+    /**
+     * Функция оплаты комунальных услуг
+     */
     public void comunalca() {
         timeToFree = randomBetween(3, 6);
     }
 
+    /**
+     * Функция обмена валют
+     */
     public void changeCash() {
         timeToFree = randomBetween(3, 5);
 
@@ -33,6 +36,7 @@ public class Casir {
     }
 
     public void timeTik() {
+        timeToFree = timeToFree - 1;
 
     }
 
