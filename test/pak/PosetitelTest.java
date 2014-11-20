@@ -6,15 +6,19 @@ import org.mockito.internal.verification.api.VerificationData;
 import org.mockito.invocation.Invocation;
 import org.mockito.verification.VerificationMode;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
+
 
 /**
  * Created by dbogdanov on 20.11.14.
  */
 public class PosetitelTest {
 
-    public static VerificationMode between(final int from, final int to) {
+
+    static int scale = 10;
+    static int range = 5 * scale;
+
+    public static VerificationMode at(final int cnt) {
         return new VerificationMode() {
 
             @Override
@@ -24,9 +28,9 @@ public class PosetitelTest {
                     if (data.getWanted().hasSimilarMethod(invocation))
                         count++;
                 }
-                if ((count <= from) || (count >= to))
+                if ((count < cnt - range) || (count > cnt + range))
                     throw new MockitoAssertionError(String.format("Для метода " + data.getWanted().getMethod().getName()
-                            + " ожидалась вероятность между %d и %d, но получилось %d", from, to, count));
+                            + " ожидалась вероятность между %d и %d, но получилось %d", cnt - range, cnt + range, count));
 
             }
         };
@@ -35,17 +39,23 @@ public class PosetitelTest {
     @Test
     public void testDeviation() {
         Casir casir = mock(Casir.class);
+
+
+        reset(casir);
+        when(casir.areYouFree()).thenReturn(true);
         Posetitel posetitel = new Posetitel();
-        for (int i = 0; i < 100; i++) {
+        for (int cnt = 0; cnt < 100 * scale; cnt++) {
+
+
             posetitel.askCasir(casir);
         }
 
 
-        verify(casir, between(20, 30)).changeCash();
-        verify(casir, between(15, 35)).comunalca();
-        verify(casir, between(20, 25)).addCash();
-        verify(casir, between(25, 30)).perevod();
-
-
+        verify(casir, at(25 * scale)).changeCash();
+        verify(casir, at(30 * scale)).comunalca();
+        verify(casir, at(40 * scale)).addCash();
+        verify(casir, at(5 * scale)).perevod();
     }
+
+
 }

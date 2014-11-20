@@ -3,11 +3,12 @@ package pak;
 import java.util.Random;
 
 public class Casir {
-    private int timeToFree = 0;
+    int timeToFree = 0;
     Random generatorMinut = new Random();
 
+
     private int randomBetween(int from, int to) {
-        return generatorMinut.nextInt(from) + to;
+        return generatorMinut.nextInt(from) + to - from;
     }
 
     /**
@@ -44,5 +45,6 @@ public class Casir {
         return timeToFree == 0;
 
     }
+
 
 }
